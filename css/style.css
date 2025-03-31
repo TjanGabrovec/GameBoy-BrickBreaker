@@ -52,17 +52,19 @@ canvas {
 /* Custom CSS for SweetAlert */
 /* Custom CSS for SweetAlert */
 .swal2-popup {
-    font-family: 'Courier New', monospace !important;
+    overflow: hidden;
+    font-family: 'Courier New' !important;
     background-color: #000000;
-    color: rgb(255, 119, 119);
-    width: 20%;
-    height: 53%;
-    padding: 20px;
+    width: 40%;
+    height: 55%;
+    padding: 10px;
     position: fixed;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    margin: 0 !important; /* Remove any default margins */
+    margin: 0 !important;
+    border: solid 2px #636363;
+    border-radius: 10px;
 }
 
 .swal2-title {
@@ -82,8 +84,8 @@ canvas {
 }
 
 .swal2-confirm {
-    background-color: #a8a8a8 !important;
-    color: rgb(0, 0, 0) !important;
+    background-color: #2e2e2e !important;
+    color: rgb(255, 255, 255) !important;
     font-size: 1rem;
     border-radius: 5% !important;
     padding: 10px 20px !important;
@@ -91,8 +93,8 @@ canvas {
 }
 
 .swal2-confirm:hover {
-    background-color: #636363 !important;
-    color: rgb(255, 255, 255) !important;
+    background-color: #aaaaaa !important;
+    color: rgb(0, 0, 0) !important;
 }
 
 .swal2-confirm:focus {

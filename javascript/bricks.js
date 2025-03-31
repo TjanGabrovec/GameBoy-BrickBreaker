@@ -8,6 +8,7 @@ var dx = 2;
 var dy = -2;
 var ballColor = "#ffffff";
 var particles = [];
+var showCredits = false;
 
 var paddleHeight = 15;
 var paddleWidth = 100;
@@ -53,6 +54,26 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("keydown", spaceRestartHandler, false);
 
+// Add score text click handlers
+document.getElementById('currentScore').addEventListener('click', function() {
+    if (!gameOver && gameActive) {
+        showCredits = true;
+        gameActive = false;
+    }
+});
+document.getElementById('highScore').addEventListener('click', function() {
+    if (!gameOver && gameActive) {
+        showCredits = true;
+        gameActive = false;
+    }
+});
+document.getElementById('gameTimer').addEventListener('click', function() {
+    if (!gameOver && gameActive) {
+        showCredits = true;
+        gameActive = false;
+    }
+});
+
 class Particle {
     constructor(x, y, color) {
         this.x = x;
@@ -70,7 +91,7 @@ class Particle {
         this.y += this.speedY;
         this.life -= this.decay;
         this.size *= 0.98;
-        this.speedY += 0.1; // Gravity effect
+        this.speedY += 0.1;
     }
     
     draw(ctx) {
@@ -101,7 +122,7 @@ function keyUpHandler(e) {
 }
 
 function spaceRestartHandler(e) {
-    if (gameOver && e.code === "Space") {
+    if ((gameOver || showCredits) && e.code === "Space") {
         resetGame();
     }
 }
@@ -148,29 +169,46 @@ function drawGameOver() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Game Over text
-    ctx.font = "48px 'Courier New', monospace";
-    ctx.fillStyle = "#d46969";
-    ctx.textAlign = "center";
-    ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2 - 60);
+    if (showCredits) {
+        // Credits text
+        ctx.font = "48px 'Courier New', monospace";
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.fillText("CREDITS", canvas.width/2, canvas.height/2 - 60);
+        
+        ctx.font = "24px 'Courier New', monospace";
+        ctx.fillText("This game was created by Tjan Gabrovec.", canvas.width/2, canvas.height/2);
+        ctx.fillText("See more at:", canvas.width/2, canvas.height/2 + 40);
+        ctx.fillText("https://github.com/TjanGabrovec/GameBoy-BrickBreaker", canvas.width/2, canvas.height/2 + 80);
+    } else {
+        // Game Over text
+        ctx.font = "48px 'Courier New', monospace";
+        ctx.fillStyle = "#d46969";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2 - 60);
+        
+        // Score display
+        ctx.font = "34px 'Courier New', monospace";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`Score: ${score}`, canvas.width/2, canvas.height/2);
+        
+        // Time display
+        ctx.fillText(`Time: ${document.getElementById('gameTimer').textContent}`, canvas.width/2, canvas.height/2 + 40);
+    }
     
-    // Score display
-    ctx.font = "34px 'Courier New', monospace";
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(`Score: ${score}`, canvas.width/2, canvas.height/2);
-    
-    // Time display
-    ctx.fillText(`Time: ${document.getElementById('gameTimer').textContent}`, canvas.width/2, canvas.height/2 + 40);
-    
-    // Blinking restart instructions
+    // Blinking text
     blinkAlpha += blinkDirection;
     if (blinkAlpha <= 0.3 || blinkAlpha >= 1) {
         blinkDirection *= -1;
     }
     
     ctx.font = "bold 34px 'Courier New', monospace";
-    ctx.fillStyle = `rgba(212, 105, 105, ${blinkAlpha})`;
-    ctx.fillText("Press SPACE to restart", canvas.width/2, canvas.height/2 + 100);
+    ctx.fillStyle = `rgba(255, 255, 255, ${blinkAlpha})`;
+    ctx.fillText(
+        showCredits ? "OKAY" : "Press SPACE to restart", 
+        canvas.width/2, 
+        showCredits ? canvas.height/2 + 140 : canvas.height/2 + 100
+    );
 }
 
 function initScorePanel() {
@@ -271,6 +309,7 @@ function resetGame() {
     document.getElementById('currentScore').textContent = '0';
     gameActive = true;
     gameOver = false;
+    showCredits = false;
     
     // Reset bricks
     for (var c = 0; c < brickColumnCount; c++) {
@@ -293,7 +332,7 @@ function resetGame() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    if (gameOver) {
+    if (gameOver || showCredits) {
         drawGameOver();
         requestAnimationFrame(draw);
         return;
@@ -338,13 +377,13 @@ function draw() {
 function createInfoButton() {
     const infoButton = document.createElement('div');
     infoButton.id = 'infoButton';
-    infoButton.innerHTML = 'i';
+    infoButton.innerHTML = '.';
     
     document.body.appendChild(infoButton);
     
     infoButton.addEventListener('click', () => {
         Swal.fire({
-            title: 'Game Information',
+            title: 'Credits',
             html: 'This game was created by Tjan Gabrovec.<br>More at github.com/TjanGabrovec',
             icon: 'info',
             confirmButtonText: 'Okay',
