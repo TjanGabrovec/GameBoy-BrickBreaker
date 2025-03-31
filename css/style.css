@@ -1,0 +1,101 @@
+body {
+    background-image: url('../images/bg.png');
+    background-size: auto; /* Prevents scaling */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed; /* Keeps it in place when scrolling */
+    background-color: #000; /* Fallback color */
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+canvas {
+    background: #000000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.55);
+}
+
+#scoreboard {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #9d64b3;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    z-index: 10;
+}
+
+.score-display {
+    display: flex;
+    justify-content: space-around;
+}
+
+.score-display span {
+    padding: 0 15px;
+}
+
+#currentScore, #highScore, #gameTimer {
+    color: #9d64b3;
+    font-weight: bold;
+}
+
+/* Custom CSS for SweetAlert */
+/* Custom CSS for SweetAlert */
+.swal2-popup {
+    font-family: 'Courier New', monospace !important;
+    background-color: #000000;
+    color: rgb(255, 119, 119);
+    width: 20%;
+    height: 53%;
+    padding: 20px;
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important; /* Remove any default margins */
+}
+
+.swal2-title {
+    font-size: 2rem;
+    color:  rgb(255, 255, 255);
+    margin-bottom: 10px;
+}
+
+.swal2-content {
+    font-size: 1.2rem;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.swal2-actions {
+    justify-content: center !important;
+}
+
+.swal2-confirm {
+    background-color: #a8a8a8 !important;
+    color: rgb(0, 0, 0) !important;
+    font-size: 1rem;
+    border-radius: 5% !important;
+    padding: 10px 20px !important;
+    border: none !important;
+}
+
+.swal2-confirm:hover {
+    background-color: #636363 !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.swal2-confirm:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}

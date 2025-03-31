@@ -1,0 +1,24 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Brick Breaker</title>
+    <link rel="icon" href="images/icon.jpg" type="images/jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> <!-- SweetAlert CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert JS -->
+</head>
+	<body onload="draw()">
+
+        <div id="scoreboard">
+            <div class="score-display">
+                <span>Score: <span id="currentScore">0</span></span>
+                <span>High Score: <span id="highScore">0</span></span>
+                <span>Time: <span id="gameTimer">00:00</span></span>
+            </div>
+        </div>
+
+		<canvas id="myCanvas" width="580" height="650%"></canvas>
+			
+		<script src="javascript/bricks.js"></script>
+	</body>
+</html>
