@@ -30,10 +30,10 @@ var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
 
-var brickRowCount = 9;
-var brickColumnCount = 6;
-var brickWidth = 80;
-var brickHeight = 25;
+var brickRowCount = 5;
+var brickColumnCount = 4;
+var brickWidth = 125;
+var brickHeight = 50;
 var brickPadding = 10;
 var brickOffsetTop = 20;
 var brickOffsetLeft = 20;
@@ -268,7 +268,7 @@ function updateTimer() {
 function loseLife() {
     if (lives > 0) {
         lives--;
-        // Hide the heart (but keep DOM structure)
+        // Hide the heart with animation
         heartElements[lives].style.opacity = '0';
         heartElements[lives].style.transform = 'scale(0.5)';
         

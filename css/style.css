@@ -1,13 +1,19 @@
 body {
     background-image: url('../images/bg.png');
-    background-size: auto; /* Prevents scaling */
+    background-size: auto;
     background-repeat: no-repeat;
     background-position: center center;
-    background-attachment: fixed; /* Keeps it in place when scrolling */
-    background-color: #000; /* Fallback color */
+    background-attachment: fixed;
     margin: 0;
     height: 100vh;
     overflow: hidden;
+}
+
+body p {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
 }
 
 canvas {
@@ -18,39 +24,86 @@ canvas {
     transform: translate(-50%, -50%) scale(0.55);
 }
 
-#scoreboard {
+#menu {
     position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    max-width: 600px;
+    top: 50%;
+    left: 20%;
+    transform: translateY(-50%);
+    width: 10%;
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px solid #9d64b3;
     border-radius: 10px;
-    padding: 10px;
+    padding: 15px;
+    font-size: 25px;
+    z-index: 10;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.menu-display {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-display button {
+    display: block;
+    padding: 5px;
+	margin: 5px;
+    text-align: center;
+	border: 2px solid #9d64b3;
+    border-radius: 10px;
+	background-color: black;
+	margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 5px;
     color: white;
     font-family: 'Courier New', monospace;
-    text-align: center;
+    font-size: 20px;
+    transition: all 0.1s;
+}
+
+.menu-display button:hover {
+    background-color: #9d64b3 !important;
+    color: black !important;
+    transform: scale(1.05);
+}
+
+#scoreboard {
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+    width: 10%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #9d64b3;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
     z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 60px;
 }
 
 .score-display {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
 }
 
 .score-display span {
-    padding: 0 15px;
+    display: block;
+    padding: 5px 0;
+    text-align: left;
 }
 
 #currentScore, #highScore, #gameTimer {
     color: #9d64b3;
     font-weight: bold;
+    margin-left: 10px;
 }
 
-/* Custom CSS for SweetAlert */
-/* Custom CSS for SweetAlert */
+/*SweetAlert*/
 .swal2-popup {
     overflow: hidden;
     font-family: 'Courier New' !important;
@@ -100,4 +153,57 @@ canvas {
 .swal2-confirm:focus {
     outline: none !important;
     box-shadow: none !important;
+}
+
+#title-screen {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.1); /* Center horizontally with initial scale */
+    z-index: 1000;
+    opacity: 0; /* start invisible */
+    transition: all 0.5s ease-out;
+}
+
+#title-screen.active {
+    opacity: 1; /* visible */
+    transform: translateX(-50%) scale(0.8);
+}
+
+.title-image {
+    max-width: 80vw;
+    max-height: 30vh;
+    display: block;
+}
+
+#lives-container {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.life-heart {
+    width: 35px;
+    height: 35px;
+    transition: all 0.3s ease;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes titlePulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(157, 100, 179, 0.7));
+    }
+    100% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px rgba(157, 100, 179, 0.9));
+    }
 }

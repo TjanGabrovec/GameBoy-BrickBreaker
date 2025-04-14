@@ -8,10 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Game variables
-var maxLives = 3;
-var lives = maxLives;
-var heartElements = document.querySelectorAll('.life-heart');
-
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var ballRadius = 15;
@@ -30,9 +26,9 @@ var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
 
-var brickRowCount = 9;
-var brickColumnCount = 6;
-var brickWidth = 80;
+var brickRowCount = 12;
+var brickColumnCount = 11;
+var brickWidth = 40;
 var brickHeight = 25;
 var brickPadding = 10;
 var brickOffsetTop = 20;
@@ -265,36 +261,6 @@ function updateTimer() {
     document.getElementById('gameTimer').textContent = `${minutes}:${seconds}`;
 }
 
-function loseLife() {
-    if (lives > 0) {
-        lives--;
-        // Hide the heart (but keep DOM structure)
-        heartElements[lives].style.opacity = '0';
-        heartElements[lives].style.transform = 'scale(0.5)';
-        
-        if (lives <= 0) {
-            gameOver = true;
-            gameActive = false;
-            clearInterval(timerInterval);
-        } else {
-            // Reset ball position
-            x = canvas.width / 2;
-            y = canvas.height - 30;
-            dx = 2;
-            dy = -2;
-            paddleX = (canvas.width - paddleWidth) / 2;
-        }
-    }
-}
-
-function resetLives() {
-    lives = maxLives;
-    heartElements.forEach(heart => {
-        heart.style.opacity = '1';
-        heart.style.transform = 'scale(1)';
-    });
-}
-
 function collisionDetection() {
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
@@ -377,9 +343,6 @@ function resetGame() {
     particles = [];
     popups = [];
     
-    // Reset lives
-    resetLives();
-    
     // Restart timer
     startTimer();
     
@@ -414,7 +377,10 @@ function draw() {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
         } else {
-            loseLife();
+            gameActive = false;
+            gameOver = true;
+            clearInterval(timerInterval);
+            return;
         }
     }
 
