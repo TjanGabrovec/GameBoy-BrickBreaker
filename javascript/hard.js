@@ -143,7 +143,7 @@ function keyUpHandler(e) {
 }
 
 function spaceRestartHandler(e) {
-    if ((gameOver || showCredits) && e.code === "Space") {
+    if ((gameOver || showCredits || allBricksBroken()) && e.code === "Space") {
         resetGame();
     }
 }
@@ -230,6 +230,34 @@ function drawGameOver() {
         canvas.width/2, 
         showCredits ? canvas.height/2 + 140 : canvas.height/2 + 100
     );
+}
+
+function drawWinScreen() {
+    // Dark overlay
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Win text
+    ctx.font = 'bold', "72px 'Courier New', monospace";
+    ctx.fillStyle = "#ffffff"; // Green color for win
+    ctx.textAlign = "center";
+    ctx.fillText("YOU WIN!", canvas.width/2, canvas.height/2 - 30);
+    
+    // try again
+    ctx.font = "34px 'Courier New', monospace";
+    ctx.fillText("Try again?", canvas.width/2, canvas.height/2 + 120);
+    
+    // Blinking restart text
+    blinkAlpha += blinkDirection;
+    if (blinkAlpha <= 0.3 || blinkAlpha >= 1) {
+        blinkDirection *= -1;
+    }
+    
+    ctx.font = "bold 34px 'Courier New', monospace";
+    ctx.fillStyle = `rgba(255, 255, 255, ${blinkAlpha})`;
+    ctx.fillText("Press SPACE to restart", canvas.width/2, canvas.height/2 + 220);
+    
+    requestAnimationFrame(drawWinScreen);
 }
 
 function initScorePanel() {
@@ -319,6 +347,17 @@ function drawPopups() {
     }
 }
 
+function allBricksBroken() {
+    for (var c = 0; c < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status == 1) {
+                return false; // At least one brick remains
+            }
+        }
+    }
+    return true; // All bricks are broken
+}
+
 function resetGame() {
     // Reset game state
     x = canvas.width / 2;
@@ -353,6 +392,12 @@ function resetGame() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    if (allBricksBroken() && !gameOver) {
+        gameActive = false;
+        drawWinScreen();
+        return;
+    }
+
     if (gameOver || showCredits) {
         drawGameOver();
         requestAnimationFrame(draw);

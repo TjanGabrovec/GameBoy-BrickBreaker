@@ -67,19 +67,19 @@ for (var c = 0; c < brickColumnCount; c++) {
     }
 }
 
-// Array to store "+1" text popups
+// +1 tekst
 var popups = [];
 
-// Initialize game elements
+// game elements
 initScorePanel();
 createInfoButton();
 
-// Event listeners
+// Event listeners - tipke
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("keydown", spaceRestartHandler, false);
 
-// Add score text click handlers
+// score text
 document.getElementById('currentScore').addEventListener('click', function() {
     if (!gameOver && gameActive) {
         showCredits = true;
@@ -190,7 +190,6 @@ function drawBricks() {
 }
 
 function drawGameOver() {
-    // Dark overlay
     ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -236,6 +235,35 @@ function drawGameOver() {
     );
 }
 
+function drawWinScreen() {
+    // Dark overlay
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Win text
+    ctx.font = 'bold', "72px 'Courier New', monospace";
+    ctx.fillStyle = "#ffffff"; // Green color for win
+    ctx.textAlign = "center";
+    ctx.fillText("YOU WIN!", canvas.width/2, canvas.height/2 - 30);
+    
+    // Creator info
+    ctx.font = "34px 'Courier New', monospace";
+    ctx.fillText("Try again?", canvas.width/2, canvas.height/2 + 120);
+    
+    // Blinking restart text
+    blinkAlpha += blinkDirection;
+    if (blinkAlpha <= 0.3 || blinkAlpha >= 1) {
+        blinkDirection *= -1;
+    }
+    
+    ctx.font = "bold 34px 'Courier New', monospace";
+    ctx.fillStyle = `rgba(255, 255, 255, ${blinkAlpha})`;
+    ctx.fillText("Press SPACE to restart", canvas.width/2, canvas.height/2 + 220);
+    
+    requestAnimationFrame(drawWinScreen);
+}
+
+
 function initScorePanel() {
     document.getElementById('highScore').textContent = highScore;
     startTimer();
@@ -268,7 +296,7 @@ function updateTimer() {
 function loseLife() {
     if (lives > 0) {
         lives--;
-        // Hide the heart (but keep DOM structure)
+        // -1 heart
         heartElements[lives].style.opacity = '0';
         heartElements[lives].style.transform = 'scale(0.5)';
         
@@ -353,8 +381,19 @@ function drawPopups() {
     }
 }
 
+function allBricksBroken() {
+    for (var c = 0; c < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status == 1) {
+                return false; // At least one brick remains
+            }
+        }
+    }
+    return true; // All bricks are broken
+}
+
 function resetGame() {
-    // Reset game state
+    // reset "game state"
     x = canvas.width / 2;
     y = canvas.height - 30;
     dx = 2;
@@ -366,30 +405,35 @@ function resetGame() {
     gameOver = false;
     showCredits = false;
     
-    // Reset bricks
+    // reset bricks
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
             bricks[c][r].status = 1;
         }
     }
     
-    // Clear particles and popups
+    // clear effects
     particles = [];
     popups = [];
     
-    // Reset lives
     resetLives();
     
-    // Restart timer
+    // restart timer
     startTimer();
     
-    // Restart game loop
+    // restart game
     draw();
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    if (allBricksBroken() && !gameOver) {
+        gameActive = false;
+        drawWinScreen();
+        return;
+    }
+
     if (gameOver || showCredits) {
         drawGameOver();
         requestAnimationFrame(draw);
